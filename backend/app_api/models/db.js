@@ -1,17 +1,43 @@
-var mongoose = require("mongoose");
-//Cloud mongodb için aşağıdaki adresi cloud adresiyle değiştirin.
-var dbURI = "mongodb+srv://sinan:sinan@cluster0.4or9sis.mongodb.net/mekanbul";
-mongoose.connect(dbURI);
-mongoose.connection.on("connected", function () {
-  console.log(dbURI + " adresine bağlandı");
-});
-mongoose.connection.on("disconnected", function () {
-  console.log(dbURI + " bağlantısı koptu");
+const mongoose = require("mongoose");
+
+// Cloud MongoDB URI
+const dbURI = "mongodb+srv://sinan:sinan@cluster0.4or9sis.mongodb.net/mekanbul";
+
+// Connect to MongoDB
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-process.on("SIGINT", function () {
-  mongoose.connection.close();
-  console.log("Bağlantı kapatıldı");
-  process.exit(0);
+// Log successful connection
+mongoose.connection.on("connected", () => {
+  console.log("MongoDB connected at:", dbURI);
 });
+
+// Log disconnection
+mongoose.connection.on("disconnected", () => {
+  console.log("MongoDB connection disconnected");
+});
+
+// Log connection errors
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
+});
+
+// Graceful shutdown on app termination
+process.on("SIGINT", () => {
+  mongoose.connection.close(() => {
+    console.log("MongoDB connection closed due to app termination");
+    process.exit(0);
+  });
+});
+
+process.on("SIGTERM", () => {
+  mongoose.connection.close(() => {
+    console.log("MongoDB connection closed due to SIGTERM");
+    process.exit(0);
+  });
+});
+
+// Require Mongoose models
 require("./venue");
