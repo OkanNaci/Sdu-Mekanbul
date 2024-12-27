@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Cloud MongoDB URI
-const dbURI = "mongodb+srv://sinan:sinan@cluster0.4or9sis.mongodb.net/mekanbul";
+var dbURI = "mongodb://localhost/mekanbul";
 
 // Connect to MongoDB
 mongoose.connect(dbURI, {
