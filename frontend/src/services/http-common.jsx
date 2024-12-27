@@ -1,6 +1,7 @@
 import axios from "axios";
+// eslint-disable-next-line react-refresh/only-export-components
 export default axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://sdu-mekanbul-backend.vercel.app/api",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
